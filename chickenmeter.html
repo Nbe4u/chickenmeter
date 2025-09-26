@@ -1,8 +1,10 @@
+
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ChickenMeter – Fixed Gift Fill</title>
+<title>ChickenMeter – Debug Mode</title>
 <style>
   body { margin:0; background:transparent; overflow:hidden; }
   #container { width:400px; height:600px; margin:auto; }
@@ -96,17 +98,23 @@
 
     // WebSocket for TikFinity
     const ws = new WebSocket("ws://localhost:21213/events");
+    ws.onopen = () => console.log("✅ Connected to TikFinity WebSocket");
+    ws.onerror = (err) => console.error("❌ WebSocket error:", err);
+
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
+      console.log("📩 Gift Event Data:", data);   // 👈 log raw event
+
       const type = (data.Type || data.type || "").toLowerCase();
 
       if (type === "gift") {
-        // Try multiple possible fields for gift amount
         const coins =
           data.Coins || data.coins ||
           data.Amount || data.amount ||
           data.DiamondCount || data.diamondCount ||
           1; // fallback
+
+        console.log("💰 Coins detected:", coins); // 👈 log parsed coins
 
         currentCoins += coins;
         updateFill();
@@ -116,8 +124,5 @@
   </script>
 </body>
 </html>
-
-
-
 
 
