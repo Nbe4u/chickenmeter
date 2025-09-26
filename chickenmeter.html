@@ -3,63 +3,39 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ChickenMeter – Egg Fill with Gauge + Goal</title>
+<title>ChickenMeter – Fixed Gauge</title>
 <style>
   body { margin:0; background:transparent; overflow:hidden; }
-  #container {
-    width:400px;
-    height:600px;
-    margin:auto;
-  }
-  svg {
-    width:100%;
-    height:100%;
-  }
-  #liquid {
-    fill: orange;
-    transition: y 1s ease, height 1s ease;
-  }
-  #eggOutline {
-    fill:none;
-    stroke:black;
-    stroke-width:6;
-  }
-  .tick {
-    stroke:red;
-    stroke-width:3;
-  }
-  .label {
-    fill:red;
-    font-size:20px;
-    font-family:Arial, sans-serif;
-  }
-  .goal {
-    fill:red;
-    font-size:28px;
-    font-weight:bold;
-    font-family:Arial, sans-serif;
-    text-anchor:middle;
-  }
+  #container { width:400px; height:600px; margin:auto; }
+  svg { width:100%; height:100%; }
+  #liquid { fill: orange; transition: y 1s ease, height 1s ease; }
+  #eggOutline { fill:none; stroke:black; stroke-width:6; }
+  .tick { stroke:red; stroke-width:3; }
+  .label { fill:red; font-size:20px; font-family:Arial, sans-serif; }
+  .goal { fill:red; font-size:28px; font-weight:bold; font-family:Arial, sans-serif; text-anchor:middle; }
 </style>
 </head>
 <body>
   <div id="container">
     <svg viewBox="0 0 400 600">
-      <!-- Egg clip path -->
-      <clipPath id="eggClip">
-        <ellipse cx="200" cy="300" rx="150" ry="250"/>
-      </clipPath>
 
-      <!-- Orange liquid -->
+      <!-- Clip path definition -->
+      <defs>
+        <clipPath id="eggClip">
+          <ellipse cx="200" cy="300" rx="150" ry="250"/>
+        </clipPath>
+      </defs>
+
+      <!-- Liquid inside egg -->
       <rect id="liquid" x="50" y="600" width="300" height="0" clip-path="url(#eggClip)"/>
 
       <!-- Egg outline -->
       <ellipse id="eggOutline" cx="200" cy="300" rx="150" ry="250"/>
 
-      <!-- Gift goal label -->
-      <text class="goal" x="200" y="50">Gift Goal: 500</text>
+      <!-- Gift goal text -->
+      <text class="goal" x="200" y="40">Gift Goal: 500</text>
 
-      <!-- Tick marks and labels (left side of egg) -->
+      <!-- Tick marks + labels (not clipped) -->
       <line class="tick" x1="40" y1="100" x2="70" y2="100"/>
       <text class="label" x="10" y="105">500</text>
 
@@ -129,3 +105,31 @@
   </script>
 </body>
 </html>
+✅ Fix Summary
+Wrapped the clipPath inside <defs> (best practice in SVG).
+
+Ensured only the liquid rect is clipped.
+
+Outline, ticks, labels, and “Gift Goal” text are outside the clip so they always display.
+
+👉 If you reload with this version, you should see:
+
+Orange liquid inside the egg only.
+
+Red tick marks and labels on the left.
+
+“Gift Goal: 500” at the top in red.
+
+Do you want the tick marks/labels to auto-scale if you change GOAL, or keep them static like this?
+
+
+
+
+
+
+
+
+
+
+
+
