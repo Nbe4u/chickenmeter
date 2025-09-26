@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ChickenMeter – Egg Fill</title>
+<title>ChickenMeter – Egg Fill with Gauge + Goal</title>
 <style>
   body { margin:0; background:transparent; overflow:hidden; }
   #container {
@@ -24,6 +24,22 @@
     stroke:black;
     stroke-width:6;
   }
+  .tick {
+    stroke:red;
+    stroke-width:3;
+  }
+  .label {
+    fill:red;
+    font-size:20px;
+    font-family:Arial, sans-serif;
+  }
+  .goal {
+    fill:red;
+    font-size:28px;
+    font-weight:bold;
+    font-family:Arial, sans-serif;
+    text-anchor:middle;
+  }
 </style>
 </head>
 <body>
@@ -31,14 +47,36 @@
     <svg viewBox="0 0 400 600">
       <!-- Egg clip path -->
       <clipPath id="eggClip">
-       <ellipse cx="200" cy="300" rx="180" ry="280"/>
+        <ellipse cx="200" cy="300" rx="150" ry="250"/>
       </clipPath>
 
-      <!-- Orange liquid rises inside egg -->
+      <!-- Orange liquid -->
       <rect id="liquid" x="50" y="600" width="300" height="0" clip-path="url(#eggClip)"/>
 
-      <!-- Egg outline always visible -->
+      <!-- Egg outline -->
       <ellipse id="eggOutline" cx="200" cy="300" rx="150" ry="250"/>
+
+      <!-- Gift goal label -->
+      <text class="goal" x="200" y="50">Gift Goal: 500</text>
+
+      <!-- Tick marks and labels (left side of egg) -->
+      <line class="tick" x1="40" y1="100" x2="70" y2="100"/>
+      <text class="label" x="10" y="105">500</text>
+
+      <line class="tick" x1="40" y1="200" x2="70" y2="200"/>
+      <text class="label" x="10" y="205">400</text>
+
+      <line class="tick" x1="40" y1="300" x2="70" y2="300"/>
+      <text class="label" x="10" y="305">300</text>
+
+      <line class="tick" x1="40" y1="400" x2="70" y2="400"/>
+      <text class="label" x="10" y="405">200</text>
+
+      <line class="tick" x1="40" y1="500" x2="70" y2="500"/>
+      <text class="label" x="10" y="505">100</text>
+
+      <line class="tick" x1="40" y1="590" x2="70" y2="590"/>
+      <text class="label" x="10" y="595">0</text>
     </svg>
 
     <audio id="cluck" src="yipeeeeeeeee.mp3" preload="auto"></audio>
@@ -50,7 +88,7 @@
 
     function updateFill() {
       let percent = Math.min(100, (currentCoins / GOAL) * 100);
-      let maxHeight = 600; // full container height
+      let maxHeight = 600;
       let fillHeight = (percent/100) * maxHeight;
       let y = 600 - fillHeight;
 
@@ -91,6 +129,3 @@
   </script>
 </body>
 </html>
-
-
-
