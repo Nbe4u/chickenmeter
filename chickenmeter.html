@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ChickenMeter – With Chicken Inside Egg</title>
+<title>ChickenMeter – Chicken Covered by Liquid</title>
 <style>
   body { margin:0; background:transparent; overflow:hidden; }
   #container { width:400px; height:600px; margin:auto; }
@@ -18,20 +18,19 @@
   <div id="container">
     <svg viewBox="0 0 400 600">
 
-      <!-- Define egg clip mask -->
+      <!-- Egg clip path -->
       <defs>
         <clipPath id="eggClip">
           <ellipse cx="200" cy="300" rx="150" ry="250"/>
         </clipPath>
       </defs>
 
+      <!-- Chicken inside egg (will be covered by liquid) -->
+      <image href="chicken.png" 
+             x="70" y="120" width="260" height="260" clip-path="url(#eggClip)" />
+
       <!-- Orange liquid -->
       <rect id="liquid" x="50" y="600" width="300" height="0" clip-path="url(#eggClip)"/>
-
-      <!-- Chicken graphic clipped to egg -->
-     <!-- Chicken graphic clipped to egg, will be covered by liquid -->
-       <image href="chicken.png" 
-       x="70" y="120" width="260" height="260" clip-path="url(#eggClip)" />
 
       <!-- Egg outline -->
       <ellipse id="eggOutline" cx="200" cy="300" rx="150" ry="250"/>
@@ -39,7 +38,7 @@
       <!-- Gift goal label -->
       <text class="goal" x="200" y="30">Gift Goal: 500</text>
 
-      <!-- Tick marks and labels spanning egg height -->
+      <!-- Ticks + labels -->
       <line class="tick" x1="330" y1="50" x2="360" y2="50"/>
       <text class="label" x="365" y="55">500</text>
 
@@ -95,7 +94,7 @@
       }
     });
 
-    // WebSocket for TikFinity gifts
+    // WebSocket for TikFinity
     const ws = new WebSocket("ws://localhost:21213/events");
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
