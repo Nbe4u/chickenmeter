@@ -69,15 +69,19 @@
     /* Tick marks */
     .tick {
       position: absolute;
-      width: 30px;
-      height: 2px;
-      background: red;
+      height: 4px;
+      width: 50px;
+      background: lime; /* debug color */
       transform-origin: left center;
+      z-index: 3;
     }
+
     .tick-label {
       position: absolute;
-      color: red;
+      color: lime;
       font-weight: bold;
+      font-size: 20px;
+      z-index: 3;
       transform: translate(-50%, -50%);
     }
   </style>
@@ -91,18 +95,18 @@
   </div>
 
   <script>
-    // Ellipse parameters (roughly match egg dimensions)
-    const centerX = 300; // container width/2
-    const centerY = 400; // container height/2
-    const radiusX = 250; // egg width/2
-    const radiusY = 380; // egg height/2
-
     const container = document.getElementById("container");
 
-    // Add tick marks along right edge of ellipse
-    for (let i = 0; i <= 5; i++) {
-      const fraction = i / 5; // 0..1
-      const angle = Math.PI/2 - fraction * Math.PI; // from top to bottom
+    // Ellipse parameters (roughly match egg dimensions)
+    const centerX = 300;   // half of container width
+    const centerY = 400;   // half of container height
+    const radiusX = 250;   // half egg width
+    const radiusY = 380;   // half egg height
+
+    // Add tick marks every 10% (0 to 100)
+    for (let i = 0; i <= 10; i++) {
+      const fraction = i / 10; // 0..1
+      const angle = Math.PI / 2 - fraction * Math.PI; // top to bottom
 
       const x = centerX + radiusX * Math.cos(angle);
       const y = centerY - radiusY * Math.sin(angle);
@@ -112,15 +116,14 @@
       tick.className = "tick";
       tick.style.left = `${x}px`;
       tick.style.top = `${y}px`;
-      tick.style.transform = `rotate(${angle*180/Math.PI}deg)`;
       container.appendChild(tick);
 
       // Label
       const label = document.createElement("div");
       label.className = "tick-label";
-      label.style.left = `${x+40}px`;
+      label.style.left = `${x + 60}px`;
       label.style.top = `${y}px`;
-      label.textContent = i*20;
+      label.textContent = i * 10;
       container.appendChild(label);
     }
   </script>
