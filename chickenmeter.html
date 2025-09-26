@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ChickenMeter – Right Side Gauge (Aligned)</title>
+<title>ChickenMeter – With Chicken Inside Egg</title>
 <style>
   body { margin:0; background:transparent; overflow:hidden; }
   #container { width:400px; height:600px; margin:auto; }
@@ -19,7 +18,7 @@
   <div id="container">
     <svg viewBox="0 0 400 600">
 
-      <!-- Clip path definition -->
+      <!-- Define egg clip mask -->
       <defs>
         <clipPath id="eggClip">
           <ellipse cx="200" cy="300" rx="150" ry="250"/>
@@ -29,13 +28,17 @@
       <!-- Orange liquid -->
       <rect id="liquid" x="50" y="600" width="300" height="0" clip-path="url(#eggClip)"/>
 
+      <!-- Chicken graphic clipped to egg -->
+      <image href="1aed3551-c3d7-4c06-893e-cf5c1c790151.png" 
+             x="70" y="120" width="260" height="260" clip-path="url(#eggClip)" />
+
       <!-- Egg outline -->
       <ellipse id="eggOutline" cx="200" cy="300" rx="150" ry="250"/>
 
       <!-- Gift goal label -->
       <text class="goal" x="200" y="30">Gift Goal: 500</text>
 
-      <!-- Tick marks and labels spanning egg height -->
+      <!-- Tick marks and labels on right -->
       <line class="tick" x1="330" y1="50" x2="360" y2="50"/>
       <text class="label" x="365" y="55">500</text>
 
@@ -81,7 +84,7 @@
 
     document.addEventListener("keydown", (event) => {
       if (event.key.toLowerCase() === "t") {
-        currentCoins += 50; // test
+        currentCoins += 50; // test fill
         updateFill();
         playSound();
       }
@@ -91,7 +94,7 @@
       }
     });
 
-    // WebSocket for TikFinity
+    // WebSocket for TikFinity gifts
     const ws = new WebSocket("ws://localhost:21213/events");
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
@@ -105,23 +108,3 @@
   </script>
 </body>
 </html>
-✅ What’s Different
-The old tick set is gone — only the corrected positions remain.
-
-Numbers now span from y=50 (top of egg) to y=550 (bottom of egg).
-
-Added a 0 mark slightly below bottom (y=580) so it’s readable.
-
-👉 Can you paste this fresh file into your overlay and check if the tick marks now line up with the top and bottom of the egg?
-
-
-
-
-
-
-
-
-
-
-
-
