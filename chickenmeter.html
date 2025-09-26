@@ -7,8 +7,8 @@
   }
   #container {
     position: relative;
-    width: 400px;   /* make the egg a good visible size */
-    height: 600px;
+    width: 450px;   /* bigger container for bigger egg */
+    height: 650px;
     margin: auto;
   }
   #egg {
@@ -16,7 +16,7 @@
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 90%;     /* make egg larger relative to container */
+    width: 100%;    /* egg fills container width */
     height: auto;
     z-index: 1;
   }
@@ -25,19 +25,19 @@
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 90%;     /* match egg’s width */
+    width: 100%;    /* match egg size */
     height: 0%;
     background: orange;
     z-index: 0;
     transition: height 1s ease;
-    clip-path: ellipse(45% 50% at 50% 50%); /* shapes fill inside egg */
+    clip-path: ellipse(46% 50% at 50% 50%);
   }
   #chicken {
     position: absolute;
-    bottom: 10%;     /* move chicken up inside egg */
+    bottom: 15%;       /* position chicken a bit higher in egg */
     left: 50%;
     transform: translateX(-50%);
-    width: 150px;    /* shrink chicken */
+    width: 160px;      /* smaller chicken */
     height: auto;
     z-index: 2;
   }
