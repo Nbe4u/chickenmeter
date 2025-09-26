@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,26 +18,22 @@
     width:100%; height:0%;
     background:url("fillmeter_fill.png") repeat-y bottom;
     background-size:100% auto;
-    z-index:0;
+    z-index:0; /* behind egg */
     transition:height 1s ease;
   }
-#egg {
-  position:absolute;
-  top:180px;   /* push it down */
-  left:0;
-  width:100%;
-  height:calc(100% - 20px);  /* keep scale consistent */
-  object-fit:contain;
-  z-index:1;
-  pointer-events:none;
-}
+  #egg {
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    z-index:1; /* egg always on top */
+    pointer-events:none;
+  }
 </style>
 </head>
 <body>
   <div id="container">
     <div id="fill"></div>
-    <!-- Egg is always visible -->
-    <img id="egg" src="fillmeter_background.png" alt="Egg Background">
+    <img id="egg" src="fillmeter_background.png" alt="Egg">
     <audio id="cluck" src="yipeeeeeeeee.mp3" preload="auto"></audio>
   </div>
 
@@ -81,9 +78,5 @@
   </script>
 </body>
 </html>
-
-
-
-
 
 
