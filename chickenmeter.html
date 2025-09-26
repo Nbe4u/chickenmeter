@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ChickenMeter – Right Side Gauge</title>
+<title>ChickenMeter – Right Side Gauge (Aligned)</title>
 <style>
   body { margin:0; background:transparent; overflow:hidden; }
   #container { width:400px; height:600px; margin:auto; }
@@ -32,34 +32,27 @@
       <!-- Egg outline -->
       <ellipse id="eggOutline" cx="200" cy="300" rx="150" ry="250"/>
 
-      <!-- Gift goal label (moved up) -->
+      <!-- Gift goal label -->
       <text class="goal" x="200" y="30">Gift Goal: 500</text>
 
-      <!-- Tick marks and labels (right side of egg) -->
-      <!-- Top (500) -->
-<line class="tick" x1="330" y1="50" x2="360" y2="50"/>
-<text class="label" x="365" y="55">500</text>
+      <!-- Tick marks and labels spanning egg height -->
+      <line class="tick" x1="330" y1="50" x2="360" y2="50"/>
+      <text class="label" x="365" y="55">500</text>
 
-<!-- 400 -->
-<line class="tick" x1="330" y1="170" x2="360" y2="170"/>
-<text class="label" x="365" y="175">400</text>
+      <line class="tick" x1="330" y1="170" x2="360" y2="170"/>
+      <text class="label" x="365" y="175">400</text>
 
-<!-- 300 (middle) -->
-<line class="tick" x1="330" y1="300" x2="360" y2="300"/>
-<text class="label" x="365" y="305">300</text>
+      <line class="tick" x1="330" y1="300" x2="360" y2="300"/>
+      <text class="label" x="365" y="305">300</text>
 
-<!-- 200 -->
-<line class="tick" x1="330" y1="430" x2="360" y2="430"/>
-<text class="label" x="365" y="435">200</text>
+      <line class="tick" x1="330" y1="430" x2="360" y2="430"/>
+      <text class="label" x="365" y="435">200</text>
 
-<!-- Bottom (100) -->
-<line class="tick" x1="330" y1="550" x2="360" y2="550"/>
-<text class="label" x="365" y="555">100</text>
+      <line class="tick" x1="330" y1="550" x2="360" y2="550"/>
+      <text class="label" x="365" y="555">100</text>
 
-<!-- Baseline (0) -->
-<line class="tick" x1="330" y1="550" x2="360" y2="550"/>
-<text class="label" x="365" y="580">0</text>
-
+      <line class="tick" x1="330" y1="580" x2="360" y2="580"/>
+      <text class="label" x="365" y="585">0</text>
     </svg>
 
     <audio id="cluck" src="yipeeeeeeeee.mp3" preload="auto"></audio>
@@ -112,4 +105,23 @@
   </script>
 </body>
 </html>
+✅ What’s Different
+The old tick set is gone — only the corrected positions remain.
+
+Numbers now span from y=50 (top of egg) to y=550 (bottom of egg).
+
+Added a 0 mark slightly below bottom (y=580) so it’s readable.
+
+👉 Can you paste this fresh file into your overlay and check if the tick marks now line up with the top and bottom of the egg?
+
+
+
+
+
+
+
+
+
+
+
 
