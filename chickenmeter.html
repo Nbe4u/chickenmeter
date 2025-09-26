@@ -5,39 +5,46 @@
     background: transparent;
     overflow: hidden;
   }
+
   #container {
     position: relative;
-    width: 600px;    /* bigger egg */
+    width: 600px;     /* overall size of overlay */
     height: 800px;
     margin: auto;
   }
+
+  /* Egg: big anchor */
   #egg {
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 100%;     /* egg fills container */
+    width: 500px;     /* force egg larger */
     height: auto;
     z-index: 1;
   }
+
+  /* Orange fill behind egg */
   #fill {
     position: absolute;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 100%;
+    width: 500px;     /* match egg size */
     height: 0%;
     background: orange;
     z-index: 0;
     transition: height 1s ease;
     clip-path: ellipse(48% 50% at 50% 50%);
   }
+
+  /* Chicken: smaller mascot inside */
   #chicken {
     position: absolute;
-    bottom: 20%;        /* raise chicken inside egg */
+    bottom: 15%;       /* sits inside egg */
     left: 50%;
     transform: translateX(-50%);
-    width: 200px;       /* shrink chicken */
+    width: 150px;      /* force chicken smaller */
     height: auto;
     z-index: 2;
   }
