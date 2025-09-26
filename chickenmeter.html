@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ChickenMeter – Chicken Covered by Liquid</title>
+<title>ChickenMeter – Fixed Gift Fill</title>
 <style>
   body { margin:0; background:transparent; overflow:hidden; }
   #container { width:400px; height:600px; margin:auto; }
@@ -21,13 +21,13 @@
       <!-- Egg clip path -->
       <defs>
         <clipPath id="eggClip">
-          <ellipse cx="160" cy="300" rx="150" ry="250"/>
+          <ellipse cx="200" cy="300" rx="150" ry="250"/>
         </clipPath>
       </defs>
 
-      <!-- Chicken inside egg (will be covered by liquid) -->
-     <image href="chicken.png" 
-       x="70" y="160" width="260" height="260" clip-path="url(#eggClip)" />
+      <!-- Chicken graphic inside egg -->
+      <image href="chicken.png" 
+             x="90" y="200" width="220" height="220" clip-path="url(#eggClip)" />
 
       <!-- Orange liquid -->
       <rect id="liquid" x="50" y="600" width="300" height="0" clip-path="url(#eggClip)"/>
@@ -38,7 +38,7 @@
       <!-- Gift goal label -->
       <text class="goal" x="200" y="30">Gift Goal: 500</text>
 
-      <!-- Ticks + labels -->
+      <!-- Tick marks and labels -->
       <line class="tick" x1="330" y1="50" x2="360" y2="50"/>
       <text class="label" x="365" y="55">500</text>
 
@@ -84,7 +84,7 @@
 
     document.addEventListener("keydown", (event) => {
       if (event.key.toLowerCase() === "t") {
-        currentCoins += 50; // test fill
+        currentCoins += 50; // test
         updateFill();
         playSound();
       }
@@ -98,8 +98,16 @@
     const ws = new WebSocket("ws://localhost:21213/events");
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      if (data.Type?.toLowerCase() === "gift" || data.type?.toLowerCase() === "gift") {
-        const coins = data.Coins || data.coins || 0;
+      const type = (data.Type || data.type || "").toLowerCase();
+
+      if (type === "gift") {
+        // Try multiple possible fields for gift amount
+        const coins =
+          data.Coins || data.coins ||
+          data.Amount || data.amount ||
+          data.DiamondCount || data.diamondCount ||
+          1; // fallback
+
         currentCoins += coins;
         updateFill();
         playSound();
@@ -108,6 +116,8 @@
   </script>
 </body>
 </html>
+
+
 
 
 
