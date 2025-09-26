@@ -14,28 +14,22 @@
     background:#222; /* dark bg so orange stands out */
   }
 #fill {
-  position:absolute; 
-  bottom:0; 
-  left:0; 
-  width:100%; 
-  height:0%;
-  background:url("fillmeter_fill.png") no-repeat bottom, orange; 
+  position:absolute;
+  bottom:0; left:0;
+  width:100%; height:0%;
+  background:url("fillmeter_fill.png") no-repeat bottom, orange;
   background-size:cover;
-  border:2px solid red; /* debug border */
-  z-index:1;
+  z-index:0; /* put behind background */
   transition:height 1s ease;
 }
 
 #background {
-  position:absolute; 
-  top:0; 
-  left:0; 
-  width:100%; 
-  height:100%;
-  background:url("fillmeter_background.png") no-repeat center, white; 
+  position:absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:url("fillmeter_background.png") no-repeat center;
   background-size:contain;
-  border:2px solid lime; /* debug border */
-  z-index:2;
+  z-index:1; /* on top */
 }
   }
 </style>
@@ -79,6 +73,7 @@
   </script>
 </body>
 </html>
+
 
 
 
