@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ChickenMeter Masked</title>
+<title>ChickenMeter – Egg Fill</title>
 <style>
   body { margin:0; background:transparent; overflow:hidden; }
   #container {
@@ -15,11 +15,11 @@
     width:100%;
     height:100%;
   }
-  #fill {
+  #liquid {
     fill: orange;
     transition: y 1s ease, height 1s ease;
   }
-  #outline {
+  #eggOutline {
     fill:none;
     stroke:black;
     stroke-width:6;
@@ -29,14 +29,18 @@
 <body>
   <div id="container">
     <svg viewBox="0 0 400 600">
-      <!-- Orange fill clipped to egg -->
+      <!-- Egg clip path -->
       <clipPath id="eggClip">
         <ellipse cx="200" cy="300" rx="150" ry="250"/>
       </clipPath>
-      <rect id="fill" x="50" y="600" width="300" height="0" clip-path="url(#eggClip)"/>
-      <!-- Egg outline -->
-      <ellipse id="outline" cx="200" cy="300" rx="150" ry="250"/>
+
+      <!-- Orange liquid rises inside egg -->
+      <rect id="liquid" x="50" y="600" width="300" height="0" clip-path="url(#eggClip)"/>
+
+      <!-- Egg outline always visible -->
+      <ellipse id="eggOutline" cx="200" cy="300" rx="150" ry="250"/>
     </svg>
+
     <audio id="cluck" src="yipeeeeeeeee.mp3" preload="auto"></audio>
   </div>
 
@@ -46,10 +50,13 @@
 
     function updateFill() {
       let percent = Math.min(100, (currentCoins / GOAL) * 100);
-      const fill = document.getElementById("fill");
-      let height = (percent/100) * 500;  // egg height to fill
-      fill.setAttribute("y", 600 - height);
-      fill.setAttribute("height", height);
+      let maxHeight = 500; // egg height
+      let fillHeight = (percent/100) * maxHeight;
+      let y = 600 - fillHeight;
+
+      const liquid = document.getElementById("liquid");
+      liquid.setAttribute("y", y);
+      liquid.setAttribute("height", fillHeight);
     }
 
     function playSound() {
@@ -60,7 +67,7 @@
 
     document.addEventListener("keydown", (event) => {
       if (event.key.toLowerCase() === "t") {
-        currentCoins += 50; // test fill
+        currentCoins += 50; // test
         updateFill();
         playSound();
       }
@@ -84,5 +91,4 @@
   </script>
 </body>
 </html>
-
 
