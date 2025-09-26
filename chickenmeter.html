@@ -40,41 +40,32 @@
     <audio id="cluck" src="yipeeeeeeeee.mp3" preload="auto"></audio>
   </div>
 
-  <script>
-    const GOAL = 500;
-    let currentCoins = 0;
+<script>
+  const GOAL = 500;
+  let currentCoins = 0;
 
-    function updateFill() {
-      let percent = Math.min(100, (currentCoins / GOAL) * 100);
-      console.log("Updating fill to:", percent + "%");
-      document.getElementById("fill").style.height = percent + "%";
+  function updateFill() {
+    let percent = Math.min(100, (currentCoins / GOAL) * 100);
+    console.log("Updating fill to:", percent + "%");
+    const fill = document.getElementById("fill");
+    if (fill) {
+      fill.style.height = percent + "%";
+      fill.style.backgroundColor = "orange"; // force visible
+    } else {
+      console.log("⚠️ #fill element not found");
     }
+  }
 
-    function playSound() {
-      const cluck = document.getElementById("cluck");
-      cluck.currentTime = 0;
-      cluck.play().catch(err => console.log("Sound blocked:", err));
+  document.addEventListener("keydown", (event) => {
+    if (event.key.toLowerCase() === "t") {
+      console.log("Test gift triggered");
+      currentCoins += 50;
+      updateFill();
     }
-
-    document.addEventListener("keydown", (event) => {
-      if (event.key.toLowerCase() === "t") {
-        console.log("Test gift triggered");
-        currentCoins += 50; // add 50 coins
-        updateFill();
-        playSound();
-      }
-      if (event.key.toLowerCase() === "y") {
-        console.log("Reset triggered");
-        currentCoins = 0;
-        updateFill();
-      }
-    });
-  </script>
-</body>
-</html>
-
-
-
-
-
-
+    if (event.key.toLowerCase() === "y") {
+      console.log("Reset triggered");
+      currentCoins = 0;
+      updateFill();
+    }
+  });
+</script>
