@@ -50,7 +50,7 @@
     });
 
     // Connect to TikFinity Event API
-    const ws = new WebSocket("ws://localhost:8080/events");
+    const ws = new WebSocket("ws://localhost:21213/events");
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
@@ -67,4 +67,5 @@
   </script>
 </body>
 </html>
+
 
