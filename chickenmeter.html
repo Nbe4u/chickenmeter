@@ -1,54 +1,65 @@
 
-<style>
-  body {
-    margin: 0;
-    background: transparent;
-    overflow: hidden;
-  }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ChickenMeter</title>
+  <style>
+    body {
+      margin: 0;
+      background: transparent;
+      overflow: hidden;
+    }
 
-  #container {
-    position: relative;
-    width: 600px;     /* overall size of overlay */
-    height: 800px;
-    margin: auto;
-  }
+    #container {
+      position: relative;
+      width: 600px;    /* main stage size */
+      height: 800px;
+      margin: auto;
+    }
 
-  /* Egg: big anchor */
-  #egg {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 500px;     /* force egg larger */
-    height: auto;
-    z-index: 1;
-  }
+    /* Egg: large and centered */
+    #egg {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 500px;    /* egg fixed large */
+      height: auto;
+      z-index: 1;
+    }
 
-  /* Orange fill behind egg */
-  #fill {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 500px;     /* match egg size */
-    height: 0%;
-    background: orange;
-    z-index: 0;
-    transition: height 1s ease;
-    clip-path: ellipse(48% 50% at 50% 50%);
-  }
+    /* Orange fill inside egg */
+    #fill {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 500px;
+      height: 0%;
+      background: orange;
+      z-index: 0;
+      transition: height 1s ease;
+      clip-path: ellipse(48% 50% at 50% 50%);
+    }
 
-  /* Chicken: smaller mascot inside */
-  #chicken {
-    position: absolute;
-    bottom: 15%;       /* sits inside egg */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 150px;      /* force chicken smaller */
-    height: auto;
-    z-index: 2;
-  }
-</style>
-
-
-
+    /* Chicken: always small */
+    #chicken {
+      position: absolute;
+      bottom: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;    /* shrink chicken! */
+      height: auto;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="fill"></div>
+    <img id="egg" src="egg.png" alt="Egg">
+    <img id="chicken" src="chicken.png" alt="Chicken">
+  </div>
+</body>
+</html>
