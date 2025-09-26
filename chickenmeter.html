@@ -2,20 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>ChickenMeter Debug</title>
+  <title>ChickenMeter</title>
   <style>
     body {
       margin: 0;
-      background: black; /* debug background */
+      background: transparent;
       overflow: hidden;
     }
+
     #container {
       position: relative;
       width: 600px;
       height: 800px;
       margin: auto;
-      border: 3px solid lime; /* debug border */
     }
+
+    /* Egg */
     #egg {
       position: absolute;
       top: 0;
@@ -25,6 +27,22 @@
       height: auto;
       z-index: 1;
     }
+
+    /* Fill */
+    #fill {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 500px;
+      height: 0%;
+      background: orange;
+      z-index: 0;
+      transition: height 1s ease;
+      clip-path: ellipse(48% 50% at 50% 50%);
+    }
+
+    /* Chicken */
     #chicken {
       position: absolute;
       bottom: 15%;
@@ -34,35 +52,109 @@
       height: auto;
       z-index: 2;
     }
-    .debug-box {
+
+    /* Goal label */
+    #goalLabel {
+      position: absolute;
+      top: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 32px;
+      font-weight: bold;
+      color: red;
+      text-shadow: 2px 2px 4px black;
+      z-index: 99;
+    }
+
+    /* Tick marks */
+    .tick {
       position: absolute;
       width: 40px;
-      height: 40px;
-      background: yellow;
+      height: 3px;
+      background: red;
+      z-index: 99;
+    }
+
+    .tick-label {
+      position: absolute;
+      color: red;
+      font-weight: bold;
+      font-size: 18px;
       z-index: 99;
     }
   </style>
 </head>
 <body>
   <div id="container">
+    <div id="goalLabel">GIFT GOAL</div>
+    <div id="fill"></div>
     <img id="egg" src="egg.png" alt="Egg">
     <img id="chicken" src="chicken.png" alt="Chicken">
   </div>
 
-  <script>
-    console.log("✅ JS is running!");
+  <audio id="giftSound" src="yipeeeeeeeee.mp3"></audio>
 
+  <script>
+    console.log("✅ ChickenMeter loaded");
+
+    let currentCoins = 0;
+    const goal = 100;
+    const fill = document.getElementById("fill");
+    const giftSound = document.getElementById("giftSound");
     const container = document.getElementById("container");
 
-    // Place 10 yellow boxes from top to bottom
-    for (let i = 0; i < 10; i++) {
-      const box = document.createElement("div");
-      box.className = "debug-box";
-      box.style.left = "280px"; // middle-ish
-      box.style.top = `${i * 70}px`;
-      container.appendChild(box);
-      console.log(`Box ${i} at y=${i * 70}`);
+    // Place 11 ticks (0–100 every 10)
+    for (let i = 0; i <= 10; i++) {
+      const percent = i * 10;
+      const y = container.clientHeight - (percent / 100) * container.clientHeight;
+
+      // tick
+      const tick = document.createElement("div");
+      tick.className = "tick";
+      tick.style.left = "520px";
+      tick.style.top = `${y}px`;
+      container.appendChild(tick);
+
+      // label
+      const label = document.createElement("div");
+      label.className = "tick-label";
+      label.style.left = "570px";
+      label.style.top = `${y - 10}px`;
+      label.textContent = percent;
+      container.appendChild(label);
     }
+
+    function updateFill() {
+      let percent = Math.min((currentCoins / goal) * 100, 100);
+      fill.style.height = percent + "%";
+    }
+
+    function playSound() {
+      giftSound.currentTime = 0;
+      giftSound.play();
+    }
+
+    // Connect to TikFinity
+    const ws = new WebSocket("ws://localhost:21213");
+
+    ws.onopen = () => console.log("✅ Connected to TikFinity");
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if ((data.event || "").toLowerCase() === "gift") {
+          const payload = data.data || {};
+          const coins = payload.coins || payload.diamondCount || payload.amount || 1;
+          console.log("💰 Gift received, coins:", coins);
+
+          currentCoins += coins;
+          updateFill();
+          playSound();
+        }
+      } catch (e) {
+        console.error("❌ Parse error", e, event.data);
+      }
+    };
   </script>
 </body>
 </html>
