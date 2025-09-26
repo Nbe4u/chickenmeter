@@ -3,37 +3,40 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ChickenMeter Final</title>
+<title>ChickenMeter Masked</title>
 <style>
   body { margin:0; background:transparent; overflow:hidden; }
   #container {
-    position:relative;
     width:400px;
     height:600px;
     margin:auto;
   }
-  #fill {
-    position:absolute;
-    bottom:0; left:0;
-    width:100%; height:0%;
-    background:url("fillmeter_fill.png") repeat-y bottom;
-    background-size:100% auto;
-    z-index:0; /* behind egg */
-    transition:height 1s ease;
+  svg {
+    width:100%;
+    height:100%;
   }
-  #egg {
-    position:absolute;
-    top:0; left:0;
-    width:100%; height:100%;
-    z-index:1; /* egg always on top */
-    pointer-events:none;
+  #fill {
+    fill: orange;
+    transition: y 1s ease, height 1s ease;
+  }
+  #outline {
+    fill:none;
+    stroke:black;
+    stroke-width:6;
   }
 </style>
 </head>
 <body>
   <div id="container">
-    <div id="fill"></div>
-    <img id="egg" src="fillmeter_background.png" alt="Egg">
+    <svg viewBox="0 0 400 600">
+      <!-- Orange fill clipped to egg -->
+      <clipPath id="eggClip">
+        <ellipse cx="200" cy="300" rx="150" ry="250"/>
+      </clipPath>
+      <rect id="fill" x="50" y="600" width="300" height="0" clip-path="url(#eggClip)"/>
+      <!-- Egg outline -->
+      <ellipse id="outline" cx="200" cy="300" rx="150" ry="250"/>
+    </svg>
     <audio id="cluck" src="yipeeeeeeeee.mp3" preload="auto"></audio>
   </div>
 
@@ -43,7 +46,10 @@
 
     function updateFill() {
       let percent = Math.min(100, (currentCoins / GOAL) * 100);
-      document.getElementById("fill").style.height = percent + "%";
+      const fill = document.getElementById("fill");
+      let height = (percent/100) * 500;  // egg height to fill
+      fill.setAttribute("y", 600 - height);
+      fill.setAttribute("height", height);
     }
 
     function playSound() {
