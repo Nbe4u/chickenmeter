@@ -20,12 +20,13 @@
     z-index:0;
     transition:height 1s ease;
   }
- #egg {
+#egg {
   position:absolute;
-  top:0; left:0;
+  top:20px;   /* push it down */
+  left:0;
   width:100%;
-  height:100%;
-  object-fit:cover;   /* stretch to completely fill container */
+  height:calc(100% - 20px);  /* keep scale consistent */
+  object-fit:contain;
   z-index:1;
   pointer-events:none;
 }
@@ -80,4 +81,5 @@
   </script>
 </body>
 </html>
+
 
