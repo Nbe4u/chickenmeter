@@ -1,5 +1,5 @@
 <script>
-  const GOAL = 500; // coins required for full bar
+  const GOAL = 500;
   let currentCoins = 0;
 
   function updateFill() {
@@ -7,47 +7,23 @@
     document.getElementById("fill").style.height = percent + "%";
   }
 
-  function resetMeter() {
-    currentCoins = 0;
-    updateFill();
-  }
-
-  // Keybind for reset (Y key)
-  document.addEventListener("keydown", (event) => {
-    if (event.key.toLowerCase() === "y") {
-      resetMeter();
-    }
-    if (event.key.toLowerCase() === "t") {
-      console.log("Test gift triggered");
-      simulateGift();
-    }
-  });
-
-  function simulateGift() {
-    currentCoins += 10; // pretend gift worth 10 coins
-    updateFill();
-    playSound();
-  }
-
   function playSound() {
     const cluck = document.getElementById("cluck");
     cluck.currentTime = 0;
-    cluck.play();
+    cluck.play().catch(err => console.log("Sound blocked:", err));
   }
 
-  // Connect to TikFinity Event API
-  const ws = new WebSocket("ws://localhost:21213/events");
-
-  ws.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    console.log("Event received:", data); // 🔍 see the raw JSON
-
-    // Try to detect gift events flexibly
-    if (data.type?.toLowerCase() === "gift" || data.Type?.toLowerCase() === "gift") {
-      let coins = data.coins || data.Coins || 0;
-      currentCoins += coins;
+  document.addEventListener("keydown", (event) => {
+    if (event.key.toLowerCase() === "t") {
+      console.log("Test gift triggered");
+      currentCoins += 10;
       updateFill();
       playSound();
     }
-  };
+    if (event.key.toLowerCase() === "y") {
+      console.log("Reset triggered");
+      currentCoins = 0;
+      updateFill();
+    }
+  });
 </script>
