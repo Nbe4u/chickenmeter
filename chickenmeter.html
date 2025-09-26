@@ -13,16 +13,15 @@
     margin:auto; 
     background:#222; /* dark bg so orange stands out */
   }
+
 #fill {
   position:absolute;
   bottom:0; left:0;
   width:100%; height:0%;
-  background:url("fillmeter_fill.png") no-repeat bottom, orange;
-  background-size:cover;
-  z-index:0; /* put behind background */
+  background:orange; /* force solid orange */
+  z-index:0; /* stay behind the chicken meter */
   transition:height 1s ease;
 }
-
 #background {
   position:absolute;
   top:0; left:0;
@@ -73,6 +72,7 @@
   </script>
 </body>
 </html>
+
 
 
 
