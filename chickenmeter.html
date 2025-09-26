@@ -1,97 +1,44 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>ChickenMeter</title>
-  <style>
-    body {
-      margin: 0;
-      background: transparent;
-      overflow: hidden;
-    }
-    #container {
-      position: relative;
-      width: 400px;
-      height: 600px;
-      margin: auto;
-    }
-    #egg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: auto;
-      z-index: 1;
-    }
-    #fill {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 0%;
-      background: orange;
-      z-index: 0;
-      transition: height 1s ease;
-      clip-path: ellipse(50% 50% at 50% 50%);
-    }
-    #chicken {
-      position: absolute;
-      bottom: 20%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 200px;
-      z-index: 2;
-    }
-  </style>
-</head>
-<body>
-  <div id="container">
-    <div id="fill"></div>
-    <img id="egg" src="egg.png" alt="Egg">
-    <img id="chicken" src="chicken.png" alt="Chicken">
-  </div>
-
-  <audio id="giftSound" src="yipeeeeeeeee.mp3"></audio>
-
-  <script>
-    let currentCoins = 0;
-    const goal = 100; // adjust as needed
-    const fill = document.getElementById("fill");
-    const giftSound = document.getElementById("giftSound");
-
-    function updateFill() {
-      let percent = Math.min((currentCoins / goal) * 100, 100);
-      fill.style.height = percent + "%";
-    }
-
-    function playSound() {
-      giftSound.currentTime = 0;
-      giftSound.play();
-    }
-
-    const ws = new WebSocket("ws://localhost:21213");
-
-    ws.onopen = () => console.log("✅ Connected to TikFinity");
-
-    ws.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        console.log("📩 Event:", data);
-
-        if ((data.event || "").toLowerCase() === "gift") {
-          const payload = data.data || {};
-          const coins = payload.coins || payload.diamondCount || payload.amount || 1;
-          console.log("💰 Gift received, coins:", coins);
-
-          currentCoins += coins;
-          updateFill();
-          playSound();
-        }
-      } catch (e) {
-        console.error("❌ Parse error", e, event.data);
-      }
-    };
-  </script>
-</body>
-</html>
+<style>
+  body {
+    margin: 0;
+    background: transparent;
+    overflow: hidden;
+  }
+  #container {
+    position: relative;
+    width: 400px;   /* make the egg a good visible size */
+    height: 600px;
+    margin: auto;
+  }
+  #egg {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;     /* make egg larger relative to container */
+    height: auto;
+    z-index: 1;
+  }
+  #fill {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;     /* match egg’s width */
+    height: 0%;
+    background: orange;
+    z-index: 0;
+    transition: height 1s ease;
+    clip-path: ellipse(45% 50% at 50% 50%); /* shapes fill inside egg */
+  }
+  #chicken {
+    position: absolute;
+    bottom: 10%;     /* move chicken up inside egg */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;    /* shrink chicken */
+    height: auto;
+    z-index: 2;
+  }
+</style>
