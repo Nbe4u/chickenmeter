@@ -3,156 +3,159 @@
 <head>
   <meta charset="UTF-8">
   <title>ChickenMeter</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <style>
     body {
       margin: 0;
-      background: transparent;
+      background: black;
       overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
-
     #container {
       position: relative;
-      width: 600px;
-      height: 800px;
-      margin: auto;
+      width: 400px;
+      height: 650px;
     }
-
-    /* Egg */
-    #egg {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 500px;
-      height: auto;
-      z-index: 1;
-    }
-
-    /* Fill */
     #fill {
       position: absolute;
       bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 500px;
+      left: 0;
+      width: 100%;
       height: 0%;
       background: orange;
+      opacity: 0.8;
       z-index: 0;
-      transition: height 1s ease;
-      clip-path: ellipse(48% 50% at 50% 50%);
+      clip-path: ellipse(50% 50% at 50% 50%);
+      transition: height 0.5s ease;
     }
-
-    /* Chicken */
+    #egg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      z-index: 1;
+      pointer-events: none;
+    }
     #chicken {
       position: absolute;
-      bottom: 15%;
-      left: 50%;
+      bottom: 27%;
+      left: 41%;
       transform: translateX(-50%);
-      width: 150px;
-      height: auto;
+      width: 220px;
       z-index: 2;
+      pointer-events: none;
     }
-
-    /* Goal label */
     #goalLabel {
       position: absolute;
-      top: -50px;
+      top: -40px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 32px;
+      font-size: 24px;
       font-weight: bold;
       color: red;
-      text-shadow: 2px 2px 4px black;
-      z-index: 99;
+      text-shadow: 1px 1px 3px black;
     }
-
-    /* Tick marks */
     .tick {
       position: absolute;
-      width: 40px;
-      height: 3px;
+      right: -30px;
+      width: 20px;
+      height: 2px;
       background: red;
-      z-index: 99;
     }
-
     .tick-label {
       position: absolute;
+      right: -60px;
+      font-size: 14px;
       color: red;
       font-weight: bold;
-      font-size: 18px;
-      z-index: 99;
     }
   </style>
 </head>
 <body>
   <div id="container">
-    <div id="goalLabel">GIFT GOAL</div>
+    <div id="goalLabel">Gift Goal: 0 / 100</div>
     <div id="fill"></div>
     <img id="egg" src="egg.png" alt="Egg">
     <img id="chicken" src="chicken.png" alt="Chicken">
   </div>
 
-  <audio id="giftSound" src="yipeeeeeeeee.mp3"></audio>
+  <audio id="cluck" src="yipeeeeeeeee.mp3"></audio>
 
   <script>
-    console.log("✅ ChickenMeter loaded");
-
     let currentCoins = 0;
     const goal = 100;
     const fill = document.getElementById("fill");
-    const giftSound = document.getElementById("giftSound");
+    const sound = document.getElementById("cluck");
     const container = document.getElementById("container");
+    const goalLabel = document.getElementById("goalLabel");
 
-    // Place 11 ticks (0–100 every 10)
-    for (let i = 0; i <= 10; i++) {
-      const percent = i * 10;
-      const y = container.clientHeight - (percent / 100) * container.clientHeight;
+    // ✅ Draw ticks once only
+    function drawTicks() {
+      document.querySelectorAll(".tick, .tick-label").forEach(el => el.remove());
+      const steps = 10; // 0% to 100% in 10% increments
+      for (let i = 0; i <= steps; i++) {
+        const percent = i / steps;
+        const y = container.offsetHeight - (container.offsetHeight * percent);
 
-      // tick
-      const tick = document.createElement("div");
-      tick.className = "tick";
-      tick.style.left = "520px";
-      tick.style.top = `${y}px`;
-      container.appendChild(tick);
+        const tick = document.createElement("div");
+        tick.className = "tick";
+        tick.style.top = `${y}px`;
+        container.appendChild(tick);
 
-      // label
-      const label = document.createElement("div");
-      label.className = "tick-label";
-      label.style.left = "570px";
-      label.style.top = `${y - 10}px`;
-      label.textContent = percent;
-      container.appendChild(label);
+        const label = document.createElement("div");
+        label.className = "tick-label";
+        label.style.top = `${y - 8}px`;
+        label.textContent = `${i * 10}%`;
+        container.appendChild(label);
+      }
     }
 
+    window.addEventListener("DOMContentLoaded", drawTicks);
+
     function updateFill() {
-      let percent = Math.min((currentCoins / goal) * 100, 100);
+      const percent = Math.min((currentCoins / goal) * 100, 100);
       fill.style.height = percent + "%";
+      goalLabel.textContent = `Gift Goal: ${currentCoins} / ${goal}`;
     }
 
     function playSound() {
-      giftSound.currentTime = 0;
-      giftSound.play();
+      sound.currentTime = 0;
+      sound.play();
     }
 
-    // Connect to TikFinity
-    const ws = new WebSocket("ws://localhost:21213");
+    // --- WebSocket connection to TikFinity ---
+    const wsUrl = "ws://localhost:21213";
+    const ws = new WebSocket(wsUrl);
 
-    ws.onopen = () => console.log("✅ Connected to TikFinity");
+    ws.onopen = () => console.log("✅ WebSocket connected");
+    ws.onerror = (err) => console.error("❌ WebSocket error", err);
 
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
         if ((data.event || "").toLowerCase() === "gift") {
           const payload = data.data || {};
-          const coins = payload.coins || payload.diamondCount || payload.amount || 1;
-          console.log("💰 Gift received, coins:", coins);
+          let coins = 0;
+
+          if (typeof payload.diamondCount !== "undefined") {
+            coins = payload.diamondCount;
+          } else if (typeof payload.amount !== "undefined") {
+            coins = payload.amount;
+          } else {
+            coins = 1;
+          }
 
           currentCoins += coins;
           updateFill();
           playSound();
         }
       } catch (e) {
-        console.error("❌ Parse error", e, event.data);
+        console.error("Parse error", e, event.data);
       }
     };
   </script>
