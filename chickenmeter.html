@@ -50,35 +50,10 @@
       z-index: 2;
       pointer-events: none;
     }
-    #goalLabel {
-      position: absolute;
-      top: -40px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 24px;
-      font-weight: bold;
-      color: red;
-      text-shadow: 1px 1px 3px black;
-    }
-    .tick {
-      position: absolute;
-      right: -30px;
-      width: 20px;
-      height: 2px;
-      background: red;
-    }
-    .tick-label {
-      position: absolute;
-      right: -60px;
-      font-size: 14px;
-      color: red;
-      font-weight: bold;
-    }
   </style>
 </head>
 <body>
   <div id="container">
-    <div id="goalLabel">Gift Goal: 0 / 100</div>
     <div id="fill"></div>
     <img id="egg" src="egg.png" alt="Egg">
     <img id="chicken" src="chicken.png" alt="Chicken">
@@ -91,34 +66,10 @@
     const goal = 100;
     const fill = document.getElementById("fill");
     const sound = document.getElementById("cluck");
-    const container = document.getElementById("container");
-    const goalLabel = document.getElementById("goalLabel");
-
-    // ✅ Guard so ticks only draw once
-    if (!window.ticksDrawn) {
-      window.ticksDrawn = true;
-      const steps = 10;
-      for (let i = 0; i <= steps; i++) {
-        const percent = i / steps;
-        const y = container.offsetHeight - (container.offsetHeight * percent);
-
-        const tick = document.createElement("div");
-        tick.className = "tick";
-        tick.style.top = `${y}px`;
-        container.appendChild(tick);
-
-        const label = document.createElement("div");
-        label.className = "tick-label";
-        label.style.top = `${y - 8}px`;
-        label.textContent = `${i * 10}%`;
-        container.appendChild(label);
-      }
-    }
 
     function updateFill() {
       const percent = Math.min((currentCoins / goal) * 100, 100);
-      fill.style.height = percent + "%";
-      goalLabel.textContent = `Gift Goal: ${currentCoins} / ${goal}`;
+      fill.style.height = percent + "%";  // 🔶 Orange fill grows
     }
 
     function playSound() {
