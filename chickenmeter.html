@@ -94,10 +94,10 @@
     const container = document.getElementById("container");
     const goalLabel = document.getElementById("goalLabel");
 
-    // ✅ Draw ticks once only
-    function drawTicks() {
-      document.querySelectorAll(".tick, .tick-label").forEach(el => el.remove());
-      const steps = 10; // 0% to 100% in 10% increments
+    // ✅ Guard so ticks only draw once
+    if (!window.ticksDrawn) {
+      window.ticksDrawn = true;
+      const steps = 10;
       for (let i = 0; i <= steps; i++) {
         const percent = i / steps;
         const y = container.offsetHeight - (container.offsetHeight * percent);
@@ -114,8 +114,6 @@
         container.appendChild(label);
       }
     }
-
-    window.addEventListener("DOMContentLoaded", drawTicks);
 
     function updateFill() {
       const percent = Math.min((currentCoins / goal) * 100, 100);
